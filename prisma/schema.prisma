@@ -12,9 +12,9 @@ generator client {
 // ===============================
 model User {
   id        Int      @id @default(autoincrement())
-  nome      String
+  name      String
   email     String   @unique
-  senha     String
+  password  String
   cpf       String
   criadoEm  DateTime @default(now())
 }
@@ -27,9 +27,10 @@ model Address {
   road          String
   number        String
   neighborhood  String
-  cidade        String? 
+  city          String? 
 
-  client        Client[]
+  clientId Int @unique
+  client   Client @relation(fields: [clientId], references: [id])
 }
 
 
@@ -39,14 +40,13 @@ model Address {
 // ===============================
 model Client {
   id        Int      @id @default(autoincrement())
-  nome      String
+  name      String
   email     String?   @unique
   cpf       String?   @unique
-  telefone  String
-  criadoEm  DateTime @default(now())
+  phone     String
+  createAt  DateTime @default(now())
 
-  addressId Int 
-  address Address @relation(fields: [addressId], references: [id])
+  address   Address?
 }
 
 // ===============================
@@ -54,9 +54,9 @@ model Client {
 // ===============================
 model Product {
   id        Int      @id @default(autoincrement())
-  nome      String
-  preco     Float
-  ativo     Boolean  @default(true)
+  name      String
+  price     Float
+  active     Boolean  @default(true)
 
   item     ItemOrder[]
 }
@@ -64,9 +64,9 @@ model Product {
 // ===============================
 // ENTREGA
 // ===============================
-model Delivry {
+model Delivery {
   id        Int      @id @default(autoincrement())
-  endereco  String
+  address   String
   taxa      Float
   criadoEm DateTime @default(now())
 
@@ -83,7 +83,7 @@ model  Order{
   total     Float
 
   itens     ItemOrder[]
-  entrega   Delivry?
+  delivery   Delivery?
 }
 
 // ===============================

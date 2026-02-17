@@ -1,24 +1,13 @@
-# 1. imagem base
-FROM node:20-alpine
+FROM node:20.9.0-slim
 
-# 2. diretório de trabalho
 WORKDIR /app
 
-# 3. copiar dependências
+RUN apt-get update && apt-get install -y openssl
+
 COPY package*.json ./
 RUN npm install
 
-# 4. copiar o resto
 COPY . .
 
-# 5. gerar prisma client
-RUN npx prisma generate
-
-# 6. build do Next
-RUN npm run build
-
-# 7. expor porta
 EXPOSE 3000
-
-# 8. start
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
